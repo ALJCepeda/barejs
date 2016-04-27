@@ -1,0 +1,2 @@
+# barejs
+Utility library
