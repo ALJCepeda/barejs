@@ -24,3 +24,17 @@ tape("supplant", function(t) {
 
     t.end();
 });
+
+tape("once", function(t) {
+	t.plan(1);
+
+	var onced = b.once(function() {
+		t.pass("Once was called only once");
+	});
+
+	for(var i=0; i<=10; i++) {
+		onced();
+	}
+
+	t.end();
+});
