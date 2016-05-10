@@ -1,0 +1,25 @@
+{
+  "name": "bareutil",
+  "version": "1.0.0",
+  "description": "Yet another utility library",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ALJCepeda/barejs.git"
+  },
+  "keywords": [
+    "bare",
+    "barejs",
+    "bareutil",
+    "utility"
+  ],
+  "author": "ALJCepeda",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ALJCepeda/barejs/issues"
+  },
+  "homepage": "https://github.com/ALJCepeda/barejs"
+}
