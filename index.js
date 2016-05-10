@@ -8,7 +8,7 @@ Base.prototype.is_a = function(objs, failure) {
 	for(var classname in objs) {
 		var obj = objs[classname];
 
-		if((obj instanceof classname) === false) {
+		if(obj.constructor.name === classname) {
 			passed = false;
 
 			if(typeof failure !== "undefined") {
