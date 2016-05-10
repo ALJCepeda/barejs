@@ -4,7 +4,7 @@
   "description": "Yet another utility library",
   "main": "index.js",
   "scripts": {
-    "test": "browserify test/index.js | testling"
+    "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",
