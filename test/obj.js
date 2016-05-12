@@ -49,3 +49,27 @@ tape("map", function(t) {
 
 	t.end();
 });
+
+tape("reduce", function(t) {
+	var count = {
+		students:38,
+		parents:62,
+		teachers:20,
+		officials:12,
+		military:10
+	};
+
+	t.equal(
+		Obj.reduce(count, 0),
+		142,
+		"When number is provided as callback, values are summed with + operator"
+	);
+
+	t.equal(
+		Obj.reduce(count, function(p, k, v) { return p + (v/2); }),
+		71,
+		"Providing a callback allows your own reduction"
+	);
+
+	t.end();
+});

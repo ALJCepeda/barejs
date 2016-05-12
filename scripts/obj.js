@@ -46,8 +46,19 @@ Obj.map = function(item, callback, allowFuncs) {
 	return result;
 };
 
-Obj.reduce = function(item, cb, result, allowFuncs) {
+Obj.reduce = function(item, callback, result, allowFuncs) {
 	result = result || 0;
+	var cb = callback;
+
+	if(Val.number(callback) || Val.string(callback)) {
+		result = callback;
+		cb = function(p, k, v) { return p + v; };
+	}
+
+	if(Val.array(callback)) {
+		result = callback;
+		cb = function(p, k, v) { return result.push(value); };
+	}
 
 	Obj.each(item, function(key, value) {
 		result = cb(result, key, value);
