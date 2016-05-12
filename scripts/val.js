@@ -26,7 +26,7 @@ Val.array = function(arr) {
 
 Val.map = function(map) {
 	return map.constructor === Map;
-}
+};
 
 Val.set = function(set) {
 	return set.constructor === Set;
@@ -38,10 +38,6 @@ Val.date = function(date) {
 
 Val.boolean = function(bool) {
 	return bool.constructor === Boolean;
-};
-
-Val.json = function(json) {
-	return json.constructor === JSON;
 };
 
 Val.regex = function(reg) {
