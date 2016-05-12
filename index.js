@@ -3,23 +3,6 @@
 */
 var Base = function() {};
 
-Base.prototype.is_a = function(objs, failure) {
-	var passed = true;
-	for(var classname in objs) {
-		var obj = objs[classname];
-
-		if(obj.constructor.name === classname) {
-			passed = false;
-
-			if(typeof failure !== "undefined") {
-				failure(classname, obj);
-			}
-		}
-	}
-
-	return passed;
-};
-
 /*
 	String introspection
 */
@@ -34,8 +17,8 @@ Base.prototype.supplant = function(str, values) {
 /*
 	Fires callback once and no more
 */
-Base.prototype.once = function(fn, context) { 
-	return function() { 
+Base.prototype.once = function(fn, context) {
+	return function() {
 		if(fn) {
 			var result = fn.apply(context || this, arguments);
 			fn = null;

@@ -5,8 +5,8 @@ var b = new Base();
 tape("supplant", function(t) {
 
     t.equal(
-    	b.supplant("Hello {0}, My name is {1}", [ "stranger", "Bob" ]), 
-    	"Hello stranger, My name is Bob", 
+    	b.supplant("Hello {0}, My name is {1}", [ "stranger", "Bob" ]),
+    	"Hello stranger, My name is Bob",
     	"String substitution using array"
     );
 
