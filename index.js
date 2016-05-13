@@ -1,6 +1,5 @@
+var Bare = require("./scripts/misc");
+Bare.Val = require("./scripts/val");
+Bare.Obj = require("./scripts/obj");
 
-module.exports = {
-	Misc:require("./scripts/misc"),
-	Val:require("./scripts/val"),
-	Obj:require("./scripts/obj")
-};
+module.exports = Bare;
