@@ -4,6 +4,10 @@ Val.undefined = function(obj) {
 	return typeof obj === "undefined";
 };
 
+Val.defined = function(obj) {
+	return typeof obj !== "undefined"  && obj !== null;
+};
+
 Val.function = function(func) {
 	return func.constructor === Function;
 };

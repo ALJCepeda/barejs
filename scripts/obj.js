@@ -1,6 +1,9 @@
 var Val = require("./val");
 var Obj = function() {};
 
+/*
+	Delegated iteration over object
+*/
 Obj.find = function(item, callback, allowFuncs) {
 	var keys = Object.keys(item);
 	var result = false;
@@ -30,12 +33,19 @@ Obj.find = function(item, callback, allowFuncs) {
 	return result;
 };
 
+/*
+	Iterates over all properties of object
+	Optionally includes functions
+*/
 Obj.each = function(item, callback, allowFuncs) {
 	Obj.find(item, function(key, value) {
 		callback(key, value);
 	}, allowFuncs);
 };
 
+/*
+	Object mapping
+*/
 Obj.map = function(item, callback, allowFuncs) {
 	var result = {};
 
@@ -46,6 +56,9 @@ Obj.map = function(item, callback, allowFuncs) {
 	return result;
 };
 
+/*
+	Delegated reduction of object
+*/
 Obj.reduce = function(item, callback, result, allowFuncs) {
 	result = result || 0;
 	var cb = callback;
@@ -67,6 +80,9 @@ Obj.reduce = function(item, callback, result, allowFuncs) {
 	return result;
 };
 
+/*
+	Delegated filtering of object
+*/
 Obj.filter = function(item, cb, allowFuncs) {
 	var result = {};
 
@@ -79,6 +95,9 @@ Obj.filter = function(item, cb, allowFuncs) {
 	return result;
 };
 
+/*
+	Pushes property keys onto array
+*/
 Obj.keys = function(item, allowFuncs) {
 	var result = [];
 
@@ -89,6 +108,9 @@ Obj.keys = function(item, allowFuncs) {
 	return result;
 };
 
+/*
+	Pushes property values onto array
+*/
 Obj.values = function(item, allowFuncs) {
 	var result = [];
 
@@ -99,6 +121,9 @@ Obj.values = function(item, allowFuncs) {
 	return result;
 };
 
+/*
+	Converts object to array of (key,value) pairs
+*/
 Obj.toArray = function(item, allowFuncs) {
 	var result = [];
 
@@ -109,6 +134,9 @@ Obj.toArray = function(item, allowFuncs) {
 	return result;
 };
 
+/*
+	Delegated sum of values
+*/
 Obj.sum = function(item, cb, allowFuncs) {
 	var shouldSum = function() { return true; };
 	if(Val.function(cb)) { shouldSum = cb; }
@@ -130,9 +158,12 @@ Obj.sum = function(item, cb, allowFuncs) {
 	return value;
 };
 
+/*
+	Increments shared keys by value
+*/
 Obj.increment = function(item, incrementBy) {
 	return Obj.map(item, function(key, value) {
-		if(!Val.undefined(incrementBy[key])) {
+		if(Val.defined(incrementBy[key]) === true) {
 			return value + incrementBy[key];
 		}
 
@@ -140,21 +171,25 @@ Obj.increment = function(item, incrementBy) {
 	});
 };
 
-Obj.merge = function(item, data) {
-	Obj.each(item, function(key, value) {
-		if(!Val.undefined(data[key])) {
-			item[key] = data[key];
-		}
+/*
+	Writes all properties of data onto item
+	item is modified
+*/
+Obj.write = function(item, data) {
+	Obj.each(data, function(key, value) {
+		item[key] = value;
 	});
 };
 
-Obj.assign = function(item) {
-	var args = [].slice.call(arguments, 1);
-
-	args.forEach(function(arg) {
-		Obj.each(arg, function(key, value) {
+/*
+	Writes all shared properties of data onto item
+	items is modified
+*/
+Obj.merge = function(item, data) {
+	Obj.each(data, function(key, value) {
+		if(Val.defined(item[key]) === true) {
 			item[key] = value;
-		});
+		}
 	});
 };
 
@@ -164,6 +199,9 @@ Obj.slim = function(item, prop) {
 	});
 };
 
+/*
+	Creates a new object sharing all properties of item
+*/
 Obj.copy = function(item) {
 	var result = {};
 

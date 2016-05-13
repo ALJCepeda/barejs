@@ -73,3 +73,20 @@ tape("reduce", function(t) {
 
 	t.end();
 });
+
+tape("write", function(t) {
+	var item = { };
+
+	Obj.write(item, { foo:"bar", here:"now" });
+	t.deepEqual(
+		item,
+		{ foo:"bar", here:"now" },
+		"Keys and values were written to object"
+	);
+
+	t.end();
+});
+
+tape("merge", function(t) {
+
+});
