@@ -88,5 +88,14 @@ tape("write", function(t) {
 });
 
 tape("merge", function(t) {
+	var item = { foo:"bar", here:"now" };
 
+	Obj.merge(item, { a:"b", c:"d", foo:"bin" });
+	t.deepEqual(
+		item,
+		{ foo:"bin", here:"now" },
+		"Only shared properties are written"
+	);
+
+	t.end();
 });
