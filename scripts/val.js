@@ -9,47 +9,47 @@ Val.defined = function(obj) {
 };
 
 Val.function = function(func) {
-	return func.constructor === Function;
+	return Val.defined(func) && func.constructor === Function;
 };
 
 Val.object = function(obj) {
-	return obj.constructor === Object;
+	return Val.defined(obj) && obj.constructor === Object;
 };
 
 Val.number = function(num) {
-	return num.constructor === Number;
+	return Val.defined(num) && num.constructor === Number;
 };
 
 Val.string = function(str) {
-	return str.constructor === String;
+	return Val.defined(str) && str.constructor === String;
 };
 
 Val.array = function(arr) {
-	return arr.constructor === Array;
+	return Val.defined(arr) && arr.constructor === Array;
 };
 
 Val.map = function(map) {
-	return map.constructor === Map;
+	return Val.defined(map) && map.constructor === Map;
 };
 
 Val.set = function(set) {
-	return set.constructor === Set;
+	return Val.defined(set) && set.constructor === Set;
 };
 
 Val.date = function(date) {
-	return date.constructor === Date;
+	return Val.defined(date) && date.constructor === Date;
 };
 
 Val.boolean = function(bool) {
-	return bool.constructor === Boolean;
+	return Val.defined(bool) && bool.constructor === Boolean;
 };
 
 Val.regex = function(reg) {
-	return reg.constructor === RegExp;
+	return Val.defined(reg) && reg.constructor === RegExp;
 };
 
 Val.promise = function(prom) {
-	return prom.constructor === Promise;
+	return Val.defined(prom) && prom.constructor === Promise;
 };
 
 module.exports = Val;
