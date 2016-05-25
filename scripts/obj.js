@@ -6,7 +6,7 @@ var Obj = function() {};
 */
 Obj.find = function(item, callback, allowFuncs) {
 	var keys = Object.keys(item);
-	var result = false;
+	var result;
 
 	var cb = callback;
 	if(Val.string(callback)) {
@@ -23,8 +23,7 @@ Obj.find = function(item, callback, allowFuncs) {
 			continue;
 		}
 
-
-		if(cb(key, value) === true) {
+		if(cb(value, key) === true) {
 			result = value;
 			break;
 		}
@@ -38,10 +37,12 @@ Obj.find = function(item, callback, allowFuncs) {
 	Optionally includes functions
 */
 Obj.each = function(item, callback, allowFuncs) {
-	Obj.find(item, function(key, value) {
-		callback(key, value);
+	Obj.find(item, function(value, key) {
+		callback(value, key);
 	}, allowFuncs);
 };
+
+Obj.forEach = Obj.each;
 
 /*
 	Object mapping
@@ -49,8 +50,8 @@ Obj.each = function(item, callback, allowFuncs) {
 Obj.map = function(item, callback, allowFuncs) {
 	var result = {};
 
-	Obj.each(item, function(key, value) {
-		result[key] = callback(key, value);
+	Obj.each(item, function(value, key) {
+		result[key] = callback(value, key);
 	}, allowFuncs);
 
 	return result;
@@ -65,16 +66,16 @@ Obj.reduce = function(item, callback, result, allowFuncs) {
 
 	if(Val.number(callback) || Val.string(callback)) {
 		result = callback;
-		cb = function(p, k, v) { return p + v; };
+		cb = function(p, v, k) { return p + v; };
 	}
 
 	if(Val.array(callback)) {
 		result = callback;
-		cb = function(p, k, v) { return result.push(value); };
+		cb = function(p, v, k) { return result.push(v); };
 	}
 
-	Obj.each(item, function(key, value) {
-		result = cb(result, key, value);
+	Obj.each(item, function(value, key) {
+		result = cb(result, value, key);
 	}, allowFuncs);
 
 	return result;
@@ -86,8 +87,8 @@ Obj.reduce = function(item, callback, result, allowFuncs) {
 Obj.filter = function(item, cb, allowFuncs) {
 	var result = {};
 
-	Obj.each(item, function(key, value) {
-		if(cb(key, value) === true) {
+	Obj.each(item, function(value, key) {
+		if(cb(value, key) === true) {
 			result[key] = value;
 		}
 	}, allowFuncs);
@@ -101,7 +102,7 @@ Obj.filter = function(item, cb, allowFuncs) {
 Obj.keys = function(item, allowFuncs) {
 	var result = [];
 
-	Obj.each(Obj, function(key, value) {
+	Obj.each(Obj, function(value, key) {
 		result.push(key);
 	}, allowFuncs);
 
@@ -114,7 +115,7 @@ Obj.keys = function(item, allowFuncs) {
 Obj.values = function(item, allowFuncs) {
 	var result = [];
 
-	Obj.each(item, function(key, value) {
+	Obj.each(item, function(value, key) {
 		result.push(value);
 	}, allowFuncs);
 
@@ -127,8 +128,8 @@ Obj.values = function(item, allowFuncs) {
 Obj.toArray = function(item, allowFuncs) {
 	var result = [];
 
-	Obj.each(item, function(key, value) {
-		result.push({ key:key, value:value });
+	Obj.each(item, function(value, key) {
+		result.push({ value:value, key:key });
 	}, allowFuncs);
 
 	return result;
@@ -142,13 +143,13 @@ Obj.sum = function(item, cb, allowFuncs) {
 	if(Val.function(cb)) { shouldSum = cb; }
 
 	if(Val.array(cb)) {
-		shouldSum = function(key, value) {
+		shouldSum = function(value, key) {
 			return cb.indexOf(key) !== -1;
 		};
 	}
 
-	var value = Obj.reduce(item, function(pre, key, cur) {
-		if(shouldSum(key, cur) === true) {
+	var value = Obj.reduce(item, function(pre, cur, key) {
+		if(shouldSum(cur, key) === true) {
 			return pre + cur;
 		}
 
@@ -162,7 +163,7 @@ Obj.sum = function(item, cb, allowFuncs) {
 	Increments shared keys by value
 */
 Obj.increment = function(item, incrementBy) {
-	return Obj.map(item, function(key, value) {
+	return Obj.map(item, function(value, key) {
 		if(Val.defined(incrementBy[key]) === true) {
 			return value + incrementBy[key];
 		}
@@ -176,17 +177,17 @@ Obj.increment = function(item, incrementBy) {
 	item is modified
 */
 Obj.write = function(item, data) {
-	Obj.each(data, function(key, value) {
+	Obj.each(data, function(value, key) {
 		item[key] = value;
 	});
 };
 
 /*
 	Writes all shared properties of data onto item
-	items is modified
+	item is modified
 */
 Obj.merge = function(item, data) {
-	Obj.each(data, function(key, value) {
+	Obj.each(data, function(value, key) {
 		if(Val.defined(item[key]) === true) {
 			item[key] = value;
 		}
@@ -194,7 +195,7 @@ Obj.merge = function(item, data) {
 };
 
 Obj.slim = function(item, prop) {
-	return Obj.map(item, function(key, value) {
+	return Obj.map(item, function(value, key) {
 		return value[prop];
 	});
 };
@@ -205,12 +206,38 @@ Obj.slim = function(item, prop) {
 Obj.copy = function(item) {
 	var result = {};
 
-	Obj.each(item, function(key, value) {
+	Obj.each(item, function(value, key) {
 		result[key] = value;
 	});
 
 	return result;
 };
 
+Obj.has = function(obj, key) {
+	return obj.hasOwnProperty(key);
+};
+
+function swap(cb) {
+	return function(a, b) {
+		cb(b, a);
+	};
+}
+
+Obj.contains = function(obj, coll) {
+	var check = function(value, key) {
+		if(Obj.has(obj,key) === false) {
+			return false;
+		}
+	};
+
+	var result = false;
+	if(Val.array(coll) === true) {
+		result = coll.find(swap(check));
+	} else {
+		result = coll.find(check);
+	}
+
+	return Val.defined(result);
+};
 
 module.exports = Obj;

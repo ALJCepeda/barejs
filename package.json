@@ -24,7 +24,8 @@
   "homepage": "https://github.com/ALJCepeda/barejs",
   "dependencies": {
     "coverify": "^1.4.1",
-    "tape": "^4.5.1"
+    "tape": "^4.5.1",
+    "promise": "~7.1.1"
   },
   "testling": {
     "files": "test/*.js",
