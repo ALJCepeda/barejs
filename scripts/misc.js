@@ -27,10 +27,17 @@ Misc.once = function(fn, context) {
 	};
 };
 
+/*
+	Prepends message to delegated, late thrown errors
+*/
 Misc.throwWith = function(msg) {
 	return function(err) { Misc.throwLater(err, msg); };
 };
 
+/*
+	Throws errors sometime later.
+	Useful for super async dependant frameworks like Promises
+*/
 Misc.throwLater = function(err, msg) {
 	if(msg) { err = Misc.supplant("{0} - {1}", [msg, err]); }
 

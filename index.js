@@ -5,7 +5,7 @@ var fs = require("fs"),
 	V = require("./scripts/val"),
 	O = require("./scripts/obj");
 
-var getFile = function(name) {
+function getFile(name) {
 	var absPath = path.join(__dirname, "scripts", name + ".js");
 
 	if(absPath !== "") {
@@ -18,7 +18,7 @@ var getFile = function(name) {
 	}
 
 	return Promise.reject("Unable to find " + name);
-};
+}
 
 var bind = function(url, name, server) {
 	console.log("Binding:", name, "to endpoint:", url);
@@ -29,7 +29,7 @@ var bind = function(url, name, server) {
 				getFile(name).then(function(data) {
 					res.setHeader("Content-Type", "text/javascript;charset=UTF-8");
 					res.end(data, "UTF8");
-				}).catch(M.throwWith("Bind"));
+				}).catch(M.throwLater);
 			}
 		}
 	});
