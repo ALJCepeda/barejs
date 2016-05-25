@@ -7,7 +7,7 @@ tape("supplant", function(t) {
 		"Bind - An Error",
 		"Test"
 	);
-/*
+
     t.equal(
     	m.supplant("Hello {0}, My name is {1}", [ "stranger", "Bob" ]),
     	"Hello stranger, My name is Bob",
@@ -30,7 +30,7 @@ tape("supplant", function(t) {
     	m.supplant("The placeholder {key} remains when {substitution} fails", [ "won't", "replace" ]),
     	"The placeholder {key} remains when {substitution} fails",
     	"No string substitution occurred"
-    );*/
+    );
 
     t.end();
 });

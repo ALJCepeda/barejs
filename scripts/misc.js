@@ -8,7 +8,9 @@ var Misc = function() {};
 */
 Misc.supplant = function(str, values) {
 	return str.replace(/{([^{}]*)}|\$(\w*)/g, function (a, b, c) {
-			var r = values[b || c].toString();
+			var r = values[b || c];
+			if(typeof r !== "undefined") { r = r.toString(); }
+			
 			return typeof r === 'string' || typeof r === 'number' ? r : a;
 		}
 	);
