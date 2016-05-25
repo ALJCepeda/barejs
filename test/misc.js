@@ -2,12 +2,17 @@ var tape = require("tape");
 var m = require("../scripts/misc");
 
 tape("supplant", function(t) {
+	t.equal(
+		m.supplant("{0} - {1}", ["Bind", "An Error"]),
+		"Bind - An Error",
+		"Test"
+	);
 /*
     t.equal(
     	m.supplant("Hello {0}, My name is {1}", [ "stranger", "Bob" ]),
     	"Hello stranger, My name is Bob",
     	"String substitution using array"
-    );*/
+    );
 
     t.equal(
     	m.supplant("A {animal}, says {sound}", { animal:"Cow", sound:"moo" }),
@@ -20,7 +25,7 @@ tape("supplant", function(t) {
 		"List of groceries: Bread, Milk, Eggs, Butter",
 		"Also works with $0 syntax"
 	);
-/*
+
     t.equal(
     	m.supplant("The placeholder {key} remains when {substitution} fails", [ "won't", "replace" ]),
     	"The placeholder {key} remains when {substitution} fails",

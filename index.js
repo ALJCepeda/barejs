@@ -1,9 +1,9 @@
 var fs = require("fs"),
 	path = require("path"),
 	Promise = require("promise"),
-	Misc = require("./scripts/misc"),
-	Val = require("./scripts/val"),
-	Obj = require("./scripts/obj");
+	M = require("./scripts/misc"),
+	V = require("./scripts/val"),
+	O = require("./scripts/obj");
 
 var getFile = function(name) {
 	var absPath = path.join(__dirname, "scripts", name + ".js");
@@ -20,16 +20,6 @@ var getFile = function(name) {
 	return Promise.reject("Unable to find " + name);
 };
 
-function throwWith(msg) {
-	return function(err) { throwLater(err, msg); };
-}
-
-function throwLater(err, msg) {
-	if(msg) { err = Misc.supplant("($0) - ($1)", [msg, err]); }
-
-	setTimeout(function() { throw err; });
-}
-
 var bind = function(url, name, server) {
 	console.log("Binding:", name, "to endpoint:", url);
 
@@ -39,7 +29,7 @@ var bind = function(url, name, server) {
 				getFile(name).then(function(data) {
 					res.setHeader("Content-Type", "text/javascript;charset=UTF-8");
 					res.end(data, "UTF8");
-				}).catch(throwWith("PromiseLand"));
+				}).catch(M.throwWith("Bind"));
 			}
 		}
 	});
@@ -47,9 +37,9 @@ var bind = function(url, name, server) {
 
 
 
-var Bare = require("./scripts/misc");
-Bare.Val = require("./scripts/val");
-Bare.Obj = require("./scripts/obj");
+var Bare = M;
+Bare.Val = V;
+Bare.Obj = O;
 Bare.bind = bind;
 
 module.exports = Bare;

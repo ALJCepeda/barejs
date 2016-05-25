@@ -8,7 +8,7 @@ var Misc = function() {};
 */
 Misc.supplant = function(str, values) {
 	return str.replace(/{([^{}]*)}|\$(\w*)/g, function (a, b, c) {
-			var r = values[b || c];
+			var r = values[b || c].toString();
 			return typeof r === 'string' || typeof r === 'number' ? r : a;
 		}
 	);
@@ -25,6 +25,16 @@ Misc.once = function(fn, context) {
 			return result;
 		}
 	};
+};
+
+Misc.throwWith = function(msg) {
+	return function(err) { Misc.throwLater(err, msg); };
+};
+
+Misc.throwLater = function(err, msg) {
+	if(msg) { err = Misc.supplant("{0} - {1}", [msg, err]); }
+
+	setTimeout(function() { throw err; });
 };
 
 module.exports = Misc;
