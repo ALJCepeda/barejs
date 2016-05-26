@@ -10,7 +10,7 @@ Misc.supplant = function(str, values) {
 	return str.replace(/{([^{}]*)}|\$(\w*)/g, function (a, b, c) {
 			var r = values[b || c];
 			if(typeof r !== "undefined") { r = r.toString(); }
-			
+
 			return typeof r === 'string' || typeof r === 'number' ? r : a;
 		}
 	);
@@ -20,12 +20,13 @@ Misc.supplant = function(str, values) {
 	Fires callback once and no more
 */
 Misc.once = function(fn, context) {
+	var result;
 	return function() {
 		if(fn) {
-			var result = fn.apply(context || this, arguments);
+			result = fn.apply(context || this, arguments);
 			fn = null;
-			return result;
 		}
+		return result;
 	};
 };
 

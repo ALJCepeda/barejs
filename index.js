@@ -3,43 +3,29 @@ var fs = require("fs"),
 	Promise = require("promise"),
 	M = require("./scripts/misc"),
 	V = require("./scripts/val"),
-	O = require("./scripts/obj");
-
-function getFile(name) {
-	var absPath = path.join(__dirname, "scripts", name + ".js");
-
-	if(absPath !== "") {
-		return new Promise(function(res, rej) {
-			fs.readFile(absPath, "UTF8", function(err, data) {
-				if(err) { rej(err); }
-				else { res(data); }
-			});
-		});
-	}
-
-	return Promise.reject("Unable to find " + name);
-}
-
-var bind = function(url, name, server) {
-	console.log("Binding:", name, "to endpoint:", url);
-
-	server.on("request", function(req, res) {
-		if(req.method === "GET") {
-			if(req.url === url) {
-				getFile(name).then(function(data) {
-					res.setHeader("Content-Type", "text/javascript;charset=UTF-8");
-					res.end(data, "UTF8");
-				}).catch(M.throwLater);
-			}
-		}
-	});
-};
-
-
+	O = require("./scripts/obj"),
+	E = require("./scripts/expose");
 
 var Bare = M;
 Bare.Val = V;
 Bare.Obj = O;
-Bare.bind = bind;
-
 module.exports = Bare;
+
+var doBound = M.once(function(server) {
+	var expose = new E();
+	expose.listen(server);
+	return expose;
+}.bind(this));
+
+var expose = function(url, name, server) {
+	this.bound = doBound(server);
+
+	var success = this.bound.add(url, name);
+	if(success === true) {
+		console.log("Bound -", name+".js", "->", url);
+	}
+
+	return success;
+};
+
+Bare.expose = expose;
