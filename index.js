@@ -19,13 +19,7 @@ var doBound = M.once(function(server) {
 
 var expose = function(url, name, server) {
 	this.bound = doBound(server);
-
-	var success = this.bound.add(url, name);
-	if(success === true) {
-		console.log("Bound -", name+".js", "->", url);
-	}
-
-	return success;
+	return this.bound.add(url, name);
 };
 
 Bare.expose = expose;
