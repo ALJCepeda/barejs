@@ -10,8 +10,8 @@ tape("find", function(t) {
 
 	t.equal(
 		Obj.find({ cow:"moo", dog:"bark", cat:"meow" },
-			function(k, v) {
-				return k === "cat";
+			function(value, key) {
+				return key === "cat";
 		}),
 		"meow",
 		"Returns value if callback returns true"
@@ -27,8 +27,8 @@ tape("map", function(t) {
 		parent:"Shawn"
 	};
 
-	var result = Obj.map(roster, function(k, v) {
-			return "Hello " + v + " you are a " + k + ".";
+	var result = Obj.map(roster, function(value, key) {
+		return "Hello " + value + " you are a " + key + ".";
 	});
 
 	t.deepEqual(
@@ -66,7 +66,7 @@ tape("reduce", function(t) {
 	);
 
 	t.equal(
-		Obj.reduce(count, function(p, k, v) { return p + (v/2); }),
+		Obj.reduce(count, function(pre, value, key) { return pre + (value/2); }),
 		71,
 		"Providing a callback allows your own reduction"
 	);

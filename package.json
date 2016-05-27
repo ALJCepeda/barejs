@@ -1,10 +1,10 @@
 {
   "name": "bareutil",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Yet another utility library",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/*.js"
+    "test": "node test"
   },
   "repository": {
     "type": "git",
@@ -23,9 +23,9 @@
   },
   "homepage": "https://github.com/ALJCepeda/barejs",
   "dependencies": {
-    "coverify": "^1.4.1",
     "tape": "^4.5.1",
-    "promise": "~7.1.1"
+    "promise": "~7.1.1",
+    "coverify": "~1.4.1"
   },
   "testling": {
     "files": "test/*.js",

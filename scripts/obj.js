@@ -10,7 +10,7 @@ Obj.find = function(item, callback, allowFuncs) {
 
 	var cb = callback;
 	if(Val.string(callback)) {
-		cb = function(key, value) {
+		cb = function(value, key) {
 			return (key === callback);
 		};
 	}

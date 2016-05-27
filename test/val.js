@@ -95,7 +95,6 @@ tape("boolean", function(t) {
 	t.false(Val.number(bool));
 	t.false(Val.string(bool));
 	t.false(Val.date(bool));
-	t.false(Val.json(bool));
 	t.false(Val.regex(bool));
 	t.end();
 });
