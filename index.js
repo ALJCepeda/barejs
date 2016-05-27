@@ -4,11 +4,12 @@ var fs = require("fs"),
 	M = require("./scripts/misc"),
 	V = require("./scripts/val"),
 	O = require("./scripts/obj"),
-	E = require("./scripts/expose");
+	E = require("./scripts/exposer");
 
 var Bare = M;
 Bare.Val = V;
 Bare.Obj = O;
+Bare.Exposer = E;
 module.exports = Bare;
 
 var doBound = M.once(function(server) {
