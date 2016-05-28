@@ -1,14 +1,14 @@
 {
   "name": "bareutil",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Yet another utility library",
   "main": "index.js",
   "scripts": {
-    "test": "node test"
+    "test": "browserify -t coverify test/index.js | testling | coverify"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ALJCepeda/barejs.git"
+    "url": "https://github.com/ALJCepeda/bareutil.git"
   },
   "keywords": [
     "bare",
@@ -19,13 +19,16 @@
   "author": "ALJCepeda",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ALJCepeda/barejs/issues"
+    "url": "https://github.com/ALJCepeda/bareutil/issues"
   },
-  "homepage": "https://github.com/ALJCepeda/barejs",
+  "homepage": "http://aljcepeda.com",
   "dependencies": {
+    "browserify": "^13.0.1",
+    "coverify": "^1.4.1",
+    "phantomjs": "^2.1.7",
+    "promise": "^7.1.1",
     "tape": "^4.5.1",
-    "promise": "~7.1.1",
-    "coverify": "~1.4.1"
+    "testling": "^1.7.1"
   },
   "testling": {
     "files": "test/*.js",

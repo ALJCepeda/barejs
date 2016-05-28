@@ -57,7 +57,7 @@ tape("number", function(t) {
 	t.end();
 });
 
-tape("number", function(t) {
+tape("string", function(t) {
 	var str = "A string";
 	t.true(Val.string(str));
 
