@@ -4,7 +4,8 @@
   "description": "Yet another utility library",
   "main": "index.js",
   "scripts": {
-    "test": "browserify -t coverify test/index.js | testling | coverify"
+	"test": "node tests/index.js",
+    "coverage": "browserify -t coverify tests/index.js --bare | node | coverify"
   },
   "repository": {
     "type": "git",
@@ -23,45 +24,8 @@
   },
   "homepage": "http://aljcepeda.com",
   "dependencies": {
-    "browserify": "^13.0.1",
     "coverify": "^1.4.1",
-    "phantomjs": "^2.1.7",
     "promise": "^7.1.1",
-    "tape": "^4.5.1",
-    "testling": "^1.7.1"
-  },
-  "testling": {
-    "files": "test/*.js",
-    "browsers": {
-      "ie": [
-        6,
-        7,
-        8,
-        9,
-        10
-      ],
-      "ff": [
-        3.5,
-        10,
-        15,
-        16,
-        17
-      ],
-      "chrome": [
-        10,
-        20,
-        21,
-        22,
-        23
-      ],
-      "safari": [
-        5.1
-      ],
-      "opera": [
-        10,
-        11,
-        12
-      ]
-    }
+    "tape": "^4.5.1"
   }
 }
