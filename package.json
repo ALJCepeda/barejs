@@ -4,7 +4,7 @@
   "description": "Yet another utility library",
   "main": "index.js",
   "scripts": {
-	"test": "node tests/index.js",
+    "test": "node tests/index.js",
     "coverage": "browserify -t coverify tests/index.js --bare | node | coverify"
   },
   "repository": {
@@ -26,6 +26,7 @@
   "dependencies": {
     "coverify": "^1.4.1",
     "promise": "^7.1.1",
-    "tape": "^4.5.1"
+    "tape": "^4.5.1",
+    "lodash": "~4.13.1"
   }
 }
