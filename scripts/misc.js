@@ -1,50 +1,53 @@
-/*
-	Performs a class check on each (classname, obj)
-*/
-var Misc = function() {};
+(function() {
+	var Misc = {};
 
-/*
-	String introspection
-*/
-Misc.supplant = function(str, values) {
-	return str.replace(/{([^{}]*)}|\$(\w*)/g, function (a, b, c) {
-			var r = values[b || c];
-			if(typeof r !== "undefined") { r = r.toString(); }
+	/*
+		String introspection
+	*/
+	Misc.supplant = function(str, values) {
+		return str.replace(/{([^{}]*)}|\$(\w*)/g, function (a, b, c) {
+				var r = values[b || c];
+				if(typeof r !== "undefined") { r = r.toString(); }
 
-			return typeof r === 'string' || typeof r === 'number' ? r : a;
-		}
-	);
-};
-
-/*
-	Fires callback once and no more
-*/
-Misc.once = function(fn, context) {
-	var result;
-	return function() {
-		if(fn) {
-			result = fn.apply(context || this, arguments);
-			fn = null;
-		}
-		return result;
+				return typeof r === 'string' || typeof r === 'number' ? r : a;
+			}
+		);
 	};
-};
 
-/*
-	Prepends message to delegated, late thrown errors
-*/
-Misc.throwWith = function(msg) {
-	return function(err) { Misc.throwLater(err, msg); };
-};
+	/*
+		Fires callback once and no more
+	*/
+	Misc.once = function(fn, context) {
+		var result;
+		return function() {
+			if(fn) {
+				result = fn.apply(context || this, arguments);
+				fn = null;
+			}
+			return result;
+		};
+	};
 
-/*
-	Throws errors sometime later.
-	Useful for super async dependant frameworks like Promises
-*/
-Misc.throwLater = function(err, msg) {
-	if(msg) { err = Misc.supplant("{0} - {1}", [msg, err]); }
+	/*
+		Prepends message to delegated, late thrown errors
+	*/
+	Misc.throwWith = function(msg) {
+		return function(err) { Misc.throwLater(err, msg); };
+	};
 
-	setTimeout(function() { throw err; });
-};
+	/*
+		Throws errors sometime later.
+		Useful for super async dependant frameworks like Promises
+	*/
+	Misc.throwLater = function(err, msg) {
+		if(msg) { err = Misc.supplant("{0} - {1}", [msg, err]); }
 
-module.exports = Misc;
+		setTimeout(function() { throw err; });
+	};
+
+	if(typeof module !== 'undefined' && module.exports) {
+		module.exports = Misc;
+	} else {
+		this.Misc = Misc;
+	}
+})();

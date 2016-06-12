@@ -1,10 +1,10 @@
 var Promise = require("promise");
 
-var Misc = function() {};
+var Ajax = function() {};
 
-Misc.post = function(url) { return Misc.ajax("POST", url); };
-Misc.get = function(url) { return Misc.ajax("GET", url); };
-Misc.ajax = function(method, url) {
+Ajax.post = function(url) { return Ajax.ajax("POST", url); };
+Ajax.get = function(url) { return Ajax.ajax("GET", url); };
+Ajax.ajax = function(method, url) {
 	var request = new XMLHttpRequest();
 
 	if(!httpRequest) {
@@ -28,16 +28,16 @@ Misc.ajax = function(method, url) {
 	});
 };
 
-Misc.pollPost = function(url, fn, timeout) { return Misc.pollURL("POST", url, fn, timeout); };
-Misc.pollGet = function(url, fn, timeout) { return Misc.pollURL("GET", url, fn, timeout); };
-Misc.pollURL = function(method, url, fn, timeout) {
+Ajax.pollPost = function(url, fn, timeout) { return Ajax.pollURL("POST", url, fn, timeout); };
+Ajax.pollGet = function(url, fn, timeout) { return Ajax.pollURL("GET", url, fn, timeout); };
+Ajax.pollURL = function(method, url, fn, timeout) {
     var promise = new Promise();
     var endTime = Number(new Date()) + (timeout || 2000);
     interval = interval || 100;
 
 	return new Promise(function(resolve, reject) {
 		(function p() {
-			Misc.ajax(method, url).then(function(response) {
+			Ajax.ajax(method, url).then(function(response) {
 				if(fn(response) === true) {
 					resolve(response);
 				} else if(Number(new Date()) < endTime) {
@@ -49,3 +49,5 @@ Misc.pollURL = function(method, url, fn, timeout) {
 		})();
 	});
 };
+
+module.exports = Ajax;
