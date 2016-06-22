@@ -1,22 +1,27 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['bareutil.val'], factory);
+        define(['bare.val'], factory);
     } else if (typeof exports === 'object') {
-        module.exports = factory(require('./val'));
+        var obj = factory(require('./val'));
+        obj.expose = function(app, express) {
+            app.use('/bare.obj.js', express.static(__dirname + __filename));
+        }
+
+        module.exports = obj;
     } else {
-        root.returnExports = factory(root.Val);
+        root.bare.obj = factory(root.bare.val);
     }
-}(this, function (Val) {
-	var Obj = {};
+}(this, function (val) {
+	var obj = {};
 	/*
 		Delegated iteration over object
 	*/
-	Obj.find = function(item, callback, allowFuncs) {
+	obj.find = function(item, callback, allowFuncs) {
 		var keys = Object.keys(item);
 		var result;
 
 		var cb = callback;
-		if(Val.string(callback)) {
+		if(val.string(callback)) {
 			cb = function(value, key) {
 				return (key === callback);
 			};
@@ -26,7 +31,7 @@
 			var key = keys[i];
 			value = item[key];
 
-			if(allowFuncs !== true && Val.function(value) === true) {
+			if(allowFuncs !== true && val.function(value) === true) {
 				continue;
 			}
 
@@ -43,21 +48,21 @@
 		Iterates over all properties of object
 		Optionally includes functions
 	*/
-	Obj.each = function(item, callback, allowFuncs) {
-		Obj.find(item, function(value, key) {
+	obj.each = function(item, callback, allowFuncs) {
+		obj.find(item, function(value, key) {
 			callback(value, key);
 		}, allowFuncs);
 	};
 
-	Obj.forEach = Obj.each;
+	obj.forEach = obj.each;
 
 	/*
 		Object mapping
 	*/
-	Obj.map = function(item, callback, allowFuncs) {
+	obj.map = function(item, callback, allowFuncs) {
 		var result = {};
 
-		Obj.each(item, function(value, key) {
+		obj.each(item, function(value, key) {
 			result[key] = callback(value, key);
 		}, allowFuncs);
 
@@ -67,21 +72,21 @@
 	/*
 		Delegated reduction of object
 	*/
-	Obj.reduce = function(item, callback, result, allowFuncs) {
+	obj.reduce = function(item, callback, result, allowFuncs) {
 		result = result || 0;
 		var cb = callback;
 
-		if(Val.number(callback) || Val.string(callback)) {
+		if(val.number(callback) || val.string(callback)) {
 			result = callback;
 			cb = function(p, v, k) { return p + v; };
 		}
 
-		if(Val.array(callback)) {
+		if(val.array(callback)) {
 			result = callback;
 			cb = function(p, v, k) { return result.push(v); };
 		}
 
-		Obj.each(item, function(value, key) {
+		obj.each(item, function(value, key) {
 			result = cb(result, value, key);
 		}, allowFuncs);
 
@@ -91,10 +96,10 @@
 	/*
 		Delegated filtering of object
 	*/
-	Obj.filter = function(item, cb, allowFuncs) {
+	obj.filter = function(item, cb, allowFuncs) {
 		var result = {};
 
-		Obj.each(item, function(value, key) {
+		obj.each(item, function(value, key) {
 			if(cb(value, key) === true) {
 				result[key] = value;
 			}
@@ -106,10 +111,10 @@
 	/*
 		Pushes property keys onto array
 	*/
-	Obj.keys = function(item, allowFuncs) {
+	obj.keys = function(item, allowFuncs) {
 		var result = [];
 
-		Obj.each(Obj, function(value, key) {
+		obj.each(obj, function(value, key) {
 			result.push(key);
 		}, allowFuncs);
 
@@ -119,10 +124,10 @@
 	/*
 		Pushes property values onto array
 	*/
-	Obj.values = function(item, allowFuncs) {
+	obj.values = function(item, allowFuncs) {
 		var result = [];
 
-		Obj.each(item, function(value, key) {
+		obj.each(item, function(value, key) {
 			result.push(value);
 		}, allowFuncs);
 
@@ -132,10 +137,10 @@
 	/*
 		Converts object to array of (key,value) pairs
 	*/
-	Obj.toArray = function(item, allowFuncs) {
+	obj.toArray = function(item, allowFuncs) {
 		var result = [];
 
-		Obj.each(item, function(value, key) {
+		obj.each(item, function(value, key) {
 			result.push({ value:value, key:key });
 		}, allowFuncs);
 
@@ -145,17 +150,17 @@
 	/*
 		Delegated sum of values
 	*/
-	Obj.sum = function(item, cb, allowFuncs) {
+	obj.sum = function(item, cb, allowFuncs) {
 		var shouldSum = function() { return true; };
-		if(Val.function(cb)) { shouldSum = cb; }
+		if(val.function(cb)) { shouldSum = cb; }
 
-		if(Val.array(cb)) {
+		if(val.array(cb)) {
 			shouldSum = function(value, key) {
 				return cb.indexOf(key) !== -1;
 			};
 		}
 
-		var value = Obj.reduce(item, function(pre, cur, key) {
+		var value = obj.reduce(item, function(pre, cur, key) {
 			if(shouldSum(cur, key) === true) {
 				return pre + cur;
 			}
@@ -169,9 +174,9 @@
 	/*
 		Increments shared keys by value
 	*/
-	Obj.increment = function(item, incrementBy) {
-		return Obj.map(item, function(value, key) {
-			if(Val.defined(incrementBy[key]) === true) {
+	obj.increment = function(item, incrementBy) {
+		return obj.map(item, function(value, key) {
+			if(val.defined(incrementBy[key]) === true) {
 				return value + incrementBy[key];
 			}
 
@@ -183,8 +188,8 @@
 		Writes all properties of data onto item
 		item is modified
 	*/
-	Obj.write = function(item, data) {
-		Obj.each(data, function(value, key) {
+	obj.write = function(item, data) {
+		obj.each(data, function(value, key) {
 			item[key] = value;
 		});
 	};
@@ -193,16 +198,16 @@
 		Writes all shared properties of data onto item
 		item is modified
 	*/
-	Obj.merge = function(item, data) {
-		Obj.each(data, function(value, key) {
-			if(Val.defined(item[key]) === true) {
+	obj.merge = function(item, data) {
+		obj.each(data, function(value, key) {
+			if(val.defined(item[key]) === true) {
 				item[key] = value;
 			}
 		});
 	};
 
-	Obj.slim = function(item, prop) {
-		return Obj.map(item, function(value, key) {
+	obj.slim = function(item, prop) {
+		return obj.map(item, function(value, key) {
 			return value[prop];
 		});
 	};
@@ -210,17 +215,17 @@
 	/*
 		Creates a new object sharing all properties of item
 	*/
-	Obj.copy = function(item) {
+	obj.copy = function(item) {
 		var result = {};
 
-		Obj.each(item, function(value, key) {
+		obj.each(item, function(value, key) {
 			result[key] = value;
 		});
 
 		return result;
 	};
 
-	Obj.has = function(obj, key) {
+	obj.has = function(obj, key) {
 		return obj.hasOwnProperty(key);
 	};
 
@@ -230,22 +235,22 @@
 		};
 	}
 
-	Obj.contains = function(obj, coll) {
+	obj.contains = function(obj, coll) {
 		var check = function(value, key) {
-			if(Obj.has(obj,key) === false) {
+			if(obj.has(obj,key) === false) {
 				return false;
 			}
 		};
 
 		var result = false;
-		if(Val.array(coll) === true) {
+		if(val.array(coll) === true) {
 			result = coll.find(swap(check));
 		} else {
 			result = coll.find(check);
 		}
 
-		return Val.defined(result);
+		return val.defined(result);
 	};
 
-    return Obj;
+    return obj;
 }));

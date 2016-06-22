@@ -2,22 +2,22 @@
     if (typeof define === 'function' && define.amd) {
         define(['bluebird'], factory);
     } else if (typeof exports === 'object') {
-        module.exports = factory(require('bluebird'));
+        var ajax = factory(require('bluebird'));
+        ajax.expose = function(app, express) {
+            app.use('/bare.ajax.js', express.static(__dirname + __filename));
+        }
+
+        module.exports = ajax;
     } else {
         root.returnExports = factory(root.Promise);
     }
 }(this, function (Promise) {
-	var Ajax = function() {};
+	var ajax = {};
 
-	Ajax.post = function(url) { return Ajax.ajax("POST", url); };
-	Ajax.get = function(url) { return Ajax.ajax("GET", url); };
-	Ajax.ajax = function(method, url) {
+	ajax.post = function(url) { return ajax.ajax("POST", url); };
+	ajax.get = function(url) { return ajax.ajax("GET", url); };
+	ajax.ajax = function(method, url) {
 		var request = new XMLHttpRequest();
-
-		if(!httpRequest) {
-			alert("Sorry this service is not available for your browers and/or version");
-			return false;
-		}
 
 		return new Promise(function(resolve, reject) {
 			request.onreadystatechange = function() {
@@ -35,16 +35,16 @@
 		});
 	};
 
-	Ajax.pollPost = function(url, fn, timeout) { return Ajax.pollURL("POST", url, fn, timeout); };
-	Ajax.pollGet = function(url, fn, timeout) { return Ajax.pollURL("GET", url, fn, timeout); };
-	Ajax.pollURL = function(method, url, fn, timeout) {
+	ajax.pollPost = function(url, fn, timeout) { return ajax.pollURL("POST", url, fn, timeout); };
+	ajax.pollGet = function(url, fn, timeout) { return ajax.pollURL("GET", url, fn, timeout); };
+	ajax.pollURL = function(method, url, fn, timeout) {
 	    var promise = new Promise();
 	    var endTime = Number(new Date()) + (timeout || 2000);
 	    interval = interval || 100;
 
 		return new Promise(function(resolve, reject) {
 			(function p() {
-				Ajax.ajax(method, url).then(function(response) {
+				ajax.ajax(method, url).then(function(response) {
 					if(fn(response) === true) {
 						resolve(response);
 					} else if(Number(new Date()) < endTime) {
@@ -57,5 +57,5 @@
 		});
 	};
 
-    return Ajax;
+    return ajax;
 }));

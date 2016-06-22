@@ -2,17 +2,26 @@
     if (typeof define === 'function' && define.amd) {
         define([], factory);
     } else if (typeof exports === 'object') {
-        module.exports = factory();
+        var misc = factory();
+        misc.expose = function(app, express) {
+            app.use('/bare.misc.js', express.static(__dirname + __filename));
+        }
+
+        module.exports = misc;
     } else {
-        root.returnExports = factory();
+        if(typeof root.bare === 'undefined') {
+            root.bare = {};
+        }
+
+        root.bare.misc = factory();
     }
-}(this, function (Val) {
-	var Misc = {};
+}(this, function () {
+	var misc = {};
 
 	/*
 		String introspection
 	*/
-	Misc.supplant = function(str, values) {
+	misc.supplant = function(str, values) {
 		return str.replace(/{([^{}]*)}|\$(\w*)/g, function (a, b, c) {
 				var r = values[b || c];
 				if(typeof r !== "undefined") { r = r.toString(); }
@@ -25,7 +34,7 @@
 	/*
 		Fires callback once and no more
 	*/
-	Misc.once = function(fn, context) {
+	misc.once = function(fn, context) {
 		var result;
 		return function() {
 			if(fn) {
@@ -39,19 +48,19 @@
 	/*
 		Prepends message to delegated, late thrown errors
 	*/
-	Misc.throwWith = function(msg) {
-		return function(err) { Misc.throwLater(err, msg); };
+	misc.throwWith = function(msg) {
+		return function(err) { misc.throwLater(err, msg); };
 	};
 
 	/*
 		Throws errors sometime later.
 		Useful for super async dependant frameworks like Promises
 	*/
-	Misc.throwLater = function(err, msg) {
-		if(msg) { err = Misc.supplant("{0} - {1}", [msg, err]); }
+	misc.throwLater = function(err, msg) {
+		if(msg) { err = misc.supplant("{0} - {1}", [msg, err]); }
 
 		setTimeout(function() { throw err; });
 	};
 
-    return Misc;
+    return misc;
 }));
