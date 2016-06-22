@@ -1,4 +1,12 @@
-(function() {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    } else if (typeof exports === 'object') {
+        module.exports = factory();
+    } else {
+        root.returnExports = factory();
+    }
+}(this, function (Val) {
 	var Misc = {};
 
 	/*
@@ -45,9 +53,5 @@
 		setTimeout(function() { throw err; });
 	};
 
-	if(typeof module !== 'undefined' && module.exports) {
-		module.exports = Misc;
-	} else {
-		this.Misc = Misc;
-	}
-})();
+    return Misc;
+}));

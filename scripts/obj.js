@@ -1,9 +1,12 @@
-(function () {
-	var Val = this.Val;
-	if(typeof module !== 'undefined' && module.exports) {
-		Val = require('./val');
-	}
-
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['bareutil.val'], factory);
+    } else if (typeof exports === 'object') {
+        module.exports = factory(require('./val'));
+    } else {
+        root.returnExports = factory(root.Val);
+    }
+}(this, function (Val) {
 	var Obj = {};
 	/*
 		Delegated iteration over object
@@ -244,9 +247,5 @@
 		return Val.defined(result);
 	};
 
-	if(typeof module !== 'undefined' && module.exports) {
-		module.exports = Obj;
-	} else {
-		this.Obj = Obj;
-	}
-})();
+    return Obj;
+}));

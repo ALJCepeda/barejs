@@ -1,4 +1,12 @@
-(function () {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    } else if (typeof exports === 'object') {
+        module.exports = factory();
+    } else {
+        root.returnExports = factory();
+    }
+}(this, function () {
 	var Val  = {};
 
 	Val.undefined = function(obj) {
@@ -53,9 +61,5 @@
 		return Val.defined(prom) && prom.constructor === Promise;
 	};
 
-	if(Val.defined(module) && module.exports) {
-		module.exports = Val;
-	} else {
-		this.Val = Val;
-	}
-})();
+    return Val;
+}));
