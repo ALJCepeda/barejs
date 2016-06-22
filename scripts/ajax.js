@@ -4,7 +4,7 @@
     } else if (typeof exports === 'object') {
         var ajax = factory(require('bluebird'));
         ajax.expose = function(app, express) {
-            app.use('/bare.ajax.js', express.static(__dirname + __filename));
+            app.use('/bare.ajax.js', express.static(__filename));
         }
 
         module.exports = ajax;

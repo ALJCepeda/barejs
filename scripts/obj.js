@@ -4,7 +4,7 @@
     } else if (typeof exports === 'object') {
         var obj = factory(require('./val'));
         obj.expose = function(app, express) {
-            app.use('/bare.obj.js', express.static(__dirname + __filename));
+            app.use('/bare.obj.js', express.static(__filename));
         }
 
         module.exports = obj;

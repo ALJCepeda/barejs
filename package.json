@@ -1,6 +1,6 @@
 {
   "name": "bareutil",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Yet another utility library",
   "main": "index.js",
   "scripts": {

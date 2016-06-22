@@ -4,7 +4,7 @@
     } else if (typeof exports === 'object') {
         var misc = factory();
         misc.expose = function(app, express) {
-            app.use('/bare.misc.js', express.static(__dirname + __filename));
+            app.use('/bare.misc.js', express.static(__filename));
         }
 
         module.exports = misc;
