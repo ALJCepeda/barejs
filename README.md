@@ -24,9 +24,9 @@ bare.val.expose(app, express);
 ### How to run tests
 
 ```bash
-    cd bareutil
-    npm run test
-    npm run coverage
+cd bareutil
+npm run test
+npm run coverage
 ```
 
 ### Validation (bare.val)
@@ -87,5 +87,5 @@ Array-like methods have 2 required and 1 optional parameter:
 ### Ajax (bare.ajax)
 
 ```html
-    <span style="color:red;">Not available for server-side yet, hasn't been tested. Don't use it</span>
+    Not available for server-side yet, hasn't been tested. Don't use it
 ```
