@@ -31,6 +31,20 @@
 		);
 	};
 
+    /*
+        Randomized string
+    */
+    misc.random = function(length, possible) {
+        var text = [];
+
+        for( var i=0; i < length; i++ ) {
+            var char = possible.charAt(Math.floor(Math.random() * possible.length));
+    		text.push(char);
+    	}
+
+        return text.join('');
+    }
+
 	/*
 		Fires callback once and no more
 	*/

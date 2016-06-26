@@ -20,22 +20,24 @@
 		var request = new XMLHttpRequest();
 
 		return new Promise(function(resolve, reject) {
+            var request = new XMLHttpRequest();
+			request.open(method, url);
+			request.setRequestHeader("Content-Type", "application/json");
 			request.onreadystatechange = function() {
 				if(request.readyState === XMLHttpRequest.DONE) {
 					if(request.status === 200) {
 						resolve(request.responseText);
 					} else {
-						reject("There was a problem with the request");
+						reject(request);
 					}
 				}
 			};
 
-			request.open(method, url);
-            if(typeof modify !== 'undefined') {
+			if(typeof modify !== 'undefined') {
 				modify(request, data);
 			}
 
-            var json = JSON.stringify(data);
+			var json = JSON.stringify(data);
 			request.send(json);
 		});
 	};
