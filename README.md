@@ -80,12 +80,12 @@ Array-like methods have 2 required and 1 optional parameter:
 ### Misc (bare.misc)
 
  1. **bare.misc.supplant(str, values)** - String substitution, `{key}` or `$key` syntax
- 2. **once(fn, context)** - Calls functions with context only once. Subsequent calls return result
- 3. **throwLater(err, msg)** - Throws error sometime later
- 4. **throwWith(msg)** - Returns throw later function with msg prepended
+ 2. **random(length, possible)** - Random string from possible characters
+ 3. **once(fn, context)** - Calls functions with context only once. Subsequent calls return result
+ 4. **throwLater(err, msg)** - Throws error sometime later
+ 5. **throwWith(msg)** - Returns throw later function with msg prepended
 
 ### Ajax (bare.ajax)
-
 ```html
     Not available for server-side yet, hasn't been tested. Don't use it
 ```
