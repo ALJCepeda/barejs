@@ -87,47 +87,47 @@
     };
 
 	val.function = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === Function;
+		return val.defined(obj) && obj.constructor === Function;
 	};
 
 	val.object = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === Object;
+		return val.defined(obj) && obj.constructor === Object;
 	};
 
 	val.number = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === Number;
+		return val.defined(obj) && obj.constructor === Number;
 	};
 
 	val.string = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === String;
+		return val.defined(obj) && obj.constructor === String;
 	};
 
 	val.array = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === Array;
+		return val.defined(obj) && obj.constructor === Array;
 	};
 
 	val.map = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === Map;
+		return val.defined(obj) && obj.constructor === Map;
 	};
 
 	val.set = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === Set;
+		return val.defined(obj) && obj.constructor === Set;
 	};
 
 	val.date = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === Date;
+		return val.defined(obj) && obj.constructor === Date;
 	};
 
 	val.boolean = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === Boolean;
+		return val.defined(obj) && obj.constructor === Boolean;
 	};
 
 	val.regex = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === RegExp;
+		return val.defined(obj) && obj.constructor === RegExp;
 	};
 
 	val.promise = function(obj) {
-		return typeof obj !== "undefined" && obj.constructor === Promise;
+		return val.defined(obj) && obj.constructor === Promise;
 	};
 
     var properLength = function(obj) {
