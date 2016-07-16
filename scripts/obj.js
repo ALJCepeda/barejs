@@ -190,7 +190,12 @@
 	*/
 	obj.write = function(item, data) {
 		obj.each(data, function(value, key) {
-			item[key] = value;
+            var data = value;
+            if(val.defined(options[key]) === true) {
+                data = options[key](value);
+            }
+
+            item[key] = data;
 		});
 	};
 
@@ -198,10 +203,16 @@
 		Writes all shared properties of data onto item
 		item is modified
 	*/
-	obj.merge = function(item, data) {
+	obj.merge = function(item, data, options) {
+        options = options || {};
 		obj.each(data, function(value, key) {
 			if(val.defined(item[key]) === true) {
-				item[key] = value;
+                var data = value;
+                if(val.defined(options[key]) === true) {
+                    data = options[key](value);
+                }
+
+				item[key] = data;
 			}
 		});
 	};
@@ -214,6 +225,7 @@
 
 	/*
 		Creates a new object sharing all properties of item
+        Performs a shallow copy
 	*/
 	obj.copy = function(item) {
 		var result = {};
@@ -229,24 +241,20 @@
 		return obj.hasOwnProperty(key);
 	};
 
-	function swap(cb) {
-		return function(a, b) {
-			cb(b, a);
-		};
-	}
-
 	obj.contains = function(obj, coll) {
-		var check = function(value, key) {
-			if(obj.has(obj,key) === false) {
-				return false;
-			}
-		};
-
 		var result = false;
 		if(val.array(coll) === true) {
-			result = coll.find(swap(check));
+			result = coll.find(function(key, value) {
+                if(obj.has(obj, key) === false) {
+                    return false;
+                }
+            });
 		} else {
-			result = coll.find(check);
+			result = coll.find(function(value, key) {
+                if(obj.has(obj, key) === false) {
+                    return false;
+                }
+            });
 		}
 
 		return val.defined(result);

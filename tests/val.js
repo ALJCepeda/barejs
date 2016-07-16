@@ -1,7 +1,87 @@
-var Val = require("./../scripts/val");
-var tape = require("tape");
+var Val = require('./../scripts/val');
+var tape = require('tape');
+var xtape = function(name) {
+	console.log('\''+name+'\'', 'manually skipped');
+};
 
-tape("array", function(t) {
+tape('validation object', function(t) {
+	var obj = { a:true, b:'two', c:3 };
+	var val = new Val(obj);
+
+	var assertC = val.validate('c').gt(2).lt(5).eq(3);
+	t.true(assertC.valid(), 'Property c is valid');
+
+	t.end();
+});
+
+tape('greater than', function(t) {
+	t.true(Val.gt(12, 10), '12 is gt 10');
+	t.true(Val.gt('A test', 3), 'String is gt 3 chars');
+	t.true(Val.gt([1, 2, 3, 4, 5], 3), 'Array has gt 3 elements');
+	t.true(Val.gt({ 'a':1, 'b':2, 'c':3 }, 2), 'Object has gt 2 properties');
+	t.true(Val.gt('testB', 'testA'), 'Compares string if string is second parameter');
+	t.true(Val.gt(12, '10'), 'This works too');
+
+	var dateA = new Date();
+	var dateB = new Date(2000);
+	t.true(Val.gt(dateA, dateB), 'Now is later than the year 2000');
+
+	t.end();
+});
+
+return;
+
+tape('less than', function(t) {
+	t.true(Val.lt(12, 100), '12 is lt 100');
+	t.true(Val.lt('A test', 10), 'String is lt 10 chars');
+	t.true(Val.lt([1, 2, 3, 4, 5], 15), 'Array has lt 15 elements');
+	t.true(Val.lt({ 'a':1, 'b':2, 'c':3 }, 6), 'Object has lt 6 properties');
+
+	var dateA = new Date(2000);
+	var dateB = new Date();
+	t.true(Val.lt(dateA, dateB), 'The year 2000 was before now');
+
+	t.end();
+});
+
+tape('equal to', function(t) {
+	t.true(Val.eq(12, 12), '12 is eq 12');
+	t.true(Val.eq('A test', 6), 'String is eq 6 chars');
+	t.true(Val.eq('A test', 'A test'), 'Strings are eq to each other');
+	t.true(Val.eq([1, 2, 3, 4, 5], 5), 'Array has 5 elements');
+	t.true(Val.eq([1, 2], [1, 2]), 'Arrays are eq to each other');
+	t.true(Val.eq({ 'a':1, 'b':2, 'c':3 }, 3), 'Object 3 properties');
+	t.true(Val.eq({ 'a':1, 'b':2 }, { 'a':1, 'b':2 }), 'Objects are eq to each other ');
+
+	var dateA = Date.now();
+	var dateB = new Date();
+	t.true(Val.eq(dateA, dateB), 'Both dates are right now');
+
+	t.end();
+});
+
+tape('is identical', function(t) {
+	var a, b;
+
+	a = 12, b = a;
+	t.true(Val.is(a, b), 'Number references are identical');
+
+	a = 12, b = 12;
+	t.false(Val.is(a, b), 'Number values are not identical');
+	 return;
+	t.true(Val.is('A test', 'A test'), 'Strings are identical');
+	t.true(Val.is([1, 2], [1, 2]), 'Arrays are is to each other');
+	t.true(Val.is({ 'a':1, 'b':2, 'c':3 }, 3), 'Object 3 properties');
+	t.true(Val.is({ 'a':1, 'b':2 }, { 'a':1, 'b':2 }), 'Objects are is to each other ');
+
+	var dateA = Date.now();
+	var dateB = new Date();
+	t.true(Val.eq(dateA, dateB), 'Both dates are right now');
+
+	t.end();
+});
+
+tape('array', function(t) {
 	var arr = [ 1, 2, 3 ];
 	t.true(Val.array(arr));
 
@@ -15,8 +95,8 @@ tape("array", function(t) {
 	t.end();
 });
 
-tape("object", function(t) {
-	var obj = { foo:"bar", nay:"no" };
+tape('object', function(t) {
+	var obj = { foo:'bar', nay:'no' };
 	t.true(Val.object(obj));
 
 	t.false(Val.array(obj));
@@ -29,7 +109,7 @@ tape("object", function(t) {
 	t.end();
 });
 
-tape("function", function(t) {
+tape('function', function(t) {
 	var func = function() {};
 	t.true(Val.function(func));
 
@@ -43,7 +123,7 @@ tape("function", function(t) {
 	t.end();
 });
 
-tape("number", function(t) {
+tape('number', function(t) {
 	var num = 27;
 	t.true(Val.number(num));
 
@@ -57,8 +137,8 @@ tape("number", function(t) {
 	t.end();
 });
 
-tape("string", function(t) {
-	var str = "A string";
+tape('string', function(t) {
+	var str = 'A string';
 	t.true(Val.string(str));
 
 	t.false(Val.array(str));
@@ -71,7 +151,7 @@ tape("string", function(t) {
 	t.end();
 });
 
-tape("date", function(t) {
+tape('date', function(t) {
 	var date = new Date();
 	t.true(Val.date(date));
 
@@ -85,7 +165,7 @@ tape("date", function(t) {
 	t.end();
 });
 
-tape("boolean", function(t) {
+tape('boolean', function(t) {
 	var bool = true;
 	t.true(Val.boolean(bool));
 
@@ -99,7 +179,7 @@ tape("boolean", function(t) {
 	t.end();
 });
 
-tape("regex", function(t) {
+tape('regex', function(t) {
 	var reg = /(w+)/;
 	t.true(Val.regex(reg));
 
