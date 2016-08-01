@@ -4,17 +4,16 @@
     } else if (typeof exports === 'object') {
         var val = factory();
         val.expose = function(app, express) {
-            app.use('/bare.val.js', express.static(__filename));
+            app.use('/bareutil.val.js', express.static(__filename));
         }
 
         module.exports = val;
     } else {
         if(typeof root.bare === 'undefined') {
-            root.bare = {};
+            root.bareutil = {};
         }
 
-
-        root.bare.val = factory();
+        root.bareutil.val = factory();
     }
 }(this, function () {
 	var val;
@@ -91,7 +90,7 @@
 	};
 
 	val.object = function(obj) {
-		return val.defined(obj) && obj.constructor === Object;
+		return val.defined(obj) && typeof obj === 'object';
 	};
 
 	val.number = function(obj) {

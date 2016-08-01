@@ -4,12 +4,16 @@
     } else if (typeof exports === 'object') {
         var ajax = factory(require('bluebird'));
         ajax.expose = function(app, express) {
-            app.use('/bare.ajax.js', express.static(__filename));
+            app.use('/bareutil.ajax.js', express.static(__filename));
         }
 
         module.exports = ajax;
     } else {
-        root.returnExports = factory(root.Promise);
+        if(typeof root.bareutil === 'undefined') {
+            root.bareutil = {};
+        }
+
+        root.bareutil.ajax = factory(root.Promise);
     }
 }(this, function (Promise) {
 	var ajax = {};
@@ -17,8 +21,6 @@
 	ajax.post = function(url, data, modify) { return ajax.ajax("POST", url, data, modify); };
 	ajax.get = function(url, data, modify) { return ajax.ajax("GET", url, data, modify); };
 	ajax.ajax = function(method, url, data, modify) {
-		var request = new XMLHttpRequest();
-
 		return new Promise(function(resolve, reject) {
             var request = new XMLHttpRequest();
 			request.open(method, url);
@@ -45,13 +47,12 @@
 	ajax.pollPost = function(url, data, fn, timeout, modify) { return ajax.pollURL("POST", url, data, fn, timeout, modify); };
 	ajax.pollGet = function(url, data, fn, timeout, modify) { return ajax.pollURL("GET", url, data, fn, timeout, modify); };
 	ajax.pollURL = function(method, url, data, fn, timeout, modify) {
-	    var promise = new Promise();
 	    var endTime = Number(new Date()) + (timeout || 2000);
 	    interval = interval || 100;
 
 		return new Promise(function(resolve, reject) {
 			(function p() {
-				ajax.ajax(method, url, data, modify).then(function(response) {
+                ajax.ajax(method, url, data, modify).then(function(response) {
 					if(fn(response) === true) {
 						resolve(response);
 					} else if(Number(new Date()) < endTime) {

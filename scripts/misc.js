@@ -4,16 +4,16 @@
     } else if (typeof exports === 'object') {
         var misc = factory();
         misc.expose = function(app, express) {
-            app.use('/bare.misc.js', express.static(__filename));
+            app.use('/bareutil.misc.js', express.static(__filename));
         }
 
         module.exports = misc;
     } else {
-        if(typeof root.bare === 'undefined') {
-            root.bare = {};
+        if(typeof root.bareutil === 'undefined') {
+            root.bareutil = {};
         }
 
-        root.bare.misc = factory();
+        root.bareutil.misc = factory();
     }
 }(this, function () {
 	var misc = {};

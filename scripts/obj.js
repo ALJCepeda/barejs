@@ -1,15 +1,15 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['bare.val'], factory);
+        define(['bareutil.val'], factory);
     } else if (typeof exports === 'object') {
         var obj = factory(require('./val'));
-        obj.expose = function(app, express) {
-            app.use('/bare.obj.js', express.static(__filename));
+        obj.expose = function(app, express, url) {
+            app.use('/bareutil.obj.js', express.static(__filename));
         }
 
         module.exports = obj;
     } else {
-        root.bare.obj = factory(root.bare.val);
+        root.bareutil.obj = factory(root.bareutil.val);
     }
 }(this, function (val) {
 	var obj = {};
@@ -18,7 +18,7 @@
 	*/
 	obj.find = function(item, callback, allowFuncs) {
 		var keys = Object.keys(item);
-		var result;
+        var result;
 
 		var cb = callback;
 		if(val.string(callback)) {
@@ -44,6 +44,18 @@
 		return result;
 	};
 
+    /*
+        Like find but stops on false
+        In otherwords every element is true for some condition
+    */
+    obj.every = function(item, callback, allowFuncs) {
+        var element = obj.find(item, function(value, key) {
+            return !callback(value, key);
+        }, allowFuncs);
+
+        return val.undefined(element);
+    };
+
 	/*
 		Iterates over all properties of object
 		Optionally includes functions
@@ -68,6 +80,16 @@
 
 		return result;
 	};
+
+    obj.array_map = function(item, callback, allowFuncs) {
+        var result = [];
+
+        obj.each(item, function(value, key) {
+            result.push(callback(value,key));
+        }, allowFuncs);
+
+        return result;
+    };
 
 	/*
 		Delegated reduction of object
@@ -205,8 +227,9 @@
 	*/
 	obj.merge = function(item, data, options) {
         options = options || {};
+
 		obj.each(data, function(value, key) {
-			if(val.defined(item[key]) === true) {
+			if(val.undefined(item[key]) !== true) {
                 var data = value;
                 if(val.defined(options[key]) === true) {
                     data = options[key](value);
