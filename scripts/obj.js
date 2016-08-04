@@ -210,8 +210,10 @@
 		Writes all properties of data onto item
 		item is modified
 	*/
-	obj.write = function(item, data) {
-		obj.each(data, function(value, key) {
+	obj.write = function(item, other, options) {
+        options = options || {};
+
+		obj.each(other, function(value, key) {
             var data = value;
             if(val.defined(options[key]) === true) {
                 data = options[key](value);
