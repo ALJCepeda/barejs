@@ -1,6 +1,6 @@
 {
   "name": "bareutil",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Yet another utility library",
   "main": "index.js",
   "scripts": {
@@ -24,9 +24,7 @@
   },
   "homepage": "http://aljcepeda.com",
   "dependencies": {
-    "bluebird": "^3.4.1",
-    "coverify": "^1.4.1",
-    "lodash": "~4.13.1",
-    "tape": "^4.5.1"
+    "bluebird": "*",
+    "tape": "*"
   }
 }
