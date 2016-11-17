@@ -3,7 +3,7 @@
         define(['bareutil.val'], factory);
     } else if (typeof exports === 'object') {
         var obj = factory(require('./val'));
-        obj.expose = function(app, express, url) {
+        obj.expose = (app, express, url) => {
             app.use('/bareutil.obj.js', express.static(__filename));
         }
 
@@ -11,12 +11,12 @@
     } else {
         root.bareutil.obj = factory(root.bareutil.val);
     }
-}(this, function (val) {
+}(this, (val) => {
 	var obj = {};
 	/*
 		Delegated iteration over object
 	*/
-	obj.find = function(item, callback, allowFuncs) {
+	obj.find = (item, callback, allowFuncs) => {
 		var cb = callback;
 		if(val.string(callback)) {
 			cb = function(value, key) {
@@ -38,17 +38,17 @@
     return item[key];
 	};
 
-    /*
-        Like find but stops on false
-        In otherwords every element is true for some condition
-    */
-    obj.every = function(item, callback, allowFuncs) {
-        var element = obj.find(item, function(value, key) {
-            return !callback(value, key);
-        }, allowFuncs);
+  /*
+      Like find but stops on false
+      In otherwords every element is true for some condition
+  */
+  obj.every = function(item, callback, allowFuncs) {
+      var element = obj.find(item, function(value, key) {
+          return !callback(value, key);
+      }, allowFuncs);
 
-        return val.undefined(element);
-    };
+      return val.undefined(element);
+  };
 
 	/*
 		Iterates over all properties of object
