@@ -128,6 +128,21 @@ tape('values', function(t) {
 
   t.end();
 });
+
+tape('toArray', function(t) {
+  t.deepEqual(
+    Obj.toArray(animals),
+    [
+      { key:'cow', value:'moo' },
+      { key:'dog', value:'bark' },
+      { key:'cat', value:'meow' }
+    ],
+    'Array of <key, value> pairs'
+  );
+
+  t.end();
+});
+
 xtape('write', function(t) {
 	var item = { };
 
