@@ -157,30 +157,6 @@
 	};
 
 	/*
-		Delegated sum of values
-	*/
-	obj.sum = function(item, cb, allowFuncs) {
-		var shouldSum = function() { return true; };
-		if(val.function(cb)) { shouldSum = cb; }
-
-		if(val.array(cb)) {
-			shouldSum = function(value, key) {
-				return cb.indexOf(key) !== -1;
-			};
-		}
-
-		var value = obj.reduce(item, function(pre, cur, key) {
-			if(shouldSum(cur, key) === true) {
-				return pre + cur;
-			}
-
-			return pre;
-		}, 0, allowFuncs);
-
-		return value;
-	};
-
-	/*
 		Increments shared keys by value
 	*/
 	obj.increment = function(item, incrementBy) {

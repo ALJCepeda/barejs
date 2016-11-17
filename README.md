@@ -65,7 +65,6 @@ Array-like methods have 2 required and 1 optional parameter:
  6. **keys** - An array of the keys of the object
  7. **values** - An array of the values of the object
  8. **toArray** - Transforms into an array of `{key, value}` pairs
- 9. **sum** - Reduces by adding. Return true/false from cb to sum value
 
 ###### Other
 
