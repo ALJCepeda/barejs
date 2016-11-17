@@ -157,19 +157,6 @@
 	};
 
 	/*
-		Increments shared keys by value
-	*/
-	obj.increment = function(item, incrementBy) {
-		return obj.map(item, function(value, key) {
-			if(val.defined(incrementBy[key]) === true) {
-				return value + incrementBy[key];
-			}
-
-			return value;
-		});
-	};
-
-	/*
 		Writes all properties of data onto item
 		item is modified
 	*/
