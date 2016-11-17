@@ -119,6 +119,15 @@ tape('keys', function(t) {
   t.end();
 });
 
+tape('values', function(t) {
+  t.deepEqual(
+    Obj.values(animals),
+    ['moo', 'bark', 'meow'],
+    'Array of animal sounds'
+  );
+
+  t.end();
+});
 xtape('write', function(t) {
 	var item = { };
 
