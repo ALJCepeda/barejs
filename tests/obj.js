@@ -5,12 +5,13 @@ let xtape = (name) => {
   console.log(name, 'was skipped');
 };
 
-tape('find', (t) => {
+xtape('find', (t) => {
   var test = { cow:'moo', dog:'bark', cat:'meow' };
+
 	t.equal(
 		Obj.find(test, 'dog'),
 		'bark',
-		'Returns the value of the found key'
+		'Dog is a key and it\'s value is bark'
 	);
 
 	t.equal(
@@ -18,13 +19,13 @@ tape('find', (t) => {
 				return key === 'cat';
 		}),
 		'meow',
-		'Returns value if callback returns true'
+		'The callback returned try because cat is a key and it\s value is meow'
 	);
 
   t.equal(
     Obj.find(test, 'howl'),
     undefined,
-    'Returns undefined if unfound'
+    'Howl is not a value in this set, undefined was returned'
   );
 
 	t.end();

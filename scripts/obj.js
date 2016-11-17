@@ -14,7 +14,7 @@
 }(this, (val) => {
 	var obj = {};
 	/*
-		Delegated iteration over object
+		Returns true if some <key, value> satifies the condition
 	*/
 	obj.find = (item, callback, allowFuncs) => {
 		var cb = callback;
@@ -39,11 +39,10 @@
 	};
 
   /*
-      Like find but stops on false
-      In otherwords every element is true for some condition
+      Checks if every element is true for some condition
   */
   obj.every = function(item, callback, allowFuncs) {
-      var element = obj.find(item, function(value, key) {
+     let element = obj.find(item, function(value, key) {
           return !callback(value, key);
       }, allowFuncs);
 
