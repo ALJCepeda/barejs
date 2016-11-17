@@ -41,7 +41,7 @@ tape('every', function(t) {
   );
 
   t.equal(
-    Obj.every(animals, (v, k) => v.length > 3),
+    Obj.every(animals, v => v.length > 3),
     false,
     'Every value is not longer than 3 characters'
   );
@@ -57,34 +57,18 @@ tape('each', function(t) {
   t.pass('Every property was iterated over');
 });
 
-xtape('map', function(t) {
-	var roster = {
-		teacher:'Katlin',
-		student:'John',
-		parent:'Shawn'
-	};
+tape('map', function(t) {
+  t.deepEqual(
+    Obj.map(animals, (v, k) => k + ' says ' + v + '!'),
+    {
+      cow:'cow says moo!',
+      dog:'dog says bark!',
+      cat:'cat says meow!'
+    },
+    'Changed to describe animal sounds'
+  );
 
-	var result = Obj.map(roster, function(value, key) {
-		return 'Hello ' + value + ' you are a ' + key + '.';
-	});
-
-	t.deepEqual(
-		result,
-		{ 	teacher: 'Hello Katlin you are a teacher.',
-			student: 'Hello John you are a student.',
-			parent: 'Hello Shawn you are a parent.'	},
-		'The values are mapped and the keys are preserved'
-	);
-
-	t.deepEqual(
-		roster,
-		{ 	teacher:'Katlin',
-			student:'John',
-			parent:'Shawn'	},
-		'The original object is left unchanged'
-	);
-
-	t.end();
+  t.end();
 });
 
 xtape('reduce', function(t) {
