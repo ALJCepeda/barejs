@@ -5,7 +5,7 @@ let xtape = (name) => {
   console.log(name, 'was skipped');
 };
 
-xtape('find', (t) => {
+tape('find', (t) => {
   var test = { cow:'moo', dog:'bark', cat:'meow' };
 
 	t.equal(
@@ -15,9 +15,7 @@ xtape('find', (t) => {
 	);
 
 	t.equal(
-		Obj.find(test, (value, key) => {
-				return key === 'cat';
-		}),
+		Obj.find(test, (v, k) => k === 'cat' ),
 		'meow',
 		'The callback returned try because cat is a key and it\s value is meow'
 	);
@@ -29,6 +27,30 @@ xtape('find', (t) => {
   );
 
 	t.end();
+});
+
+tape('every', function(t) {
+  var test = { cow:'moo', dog:'bark', cat:'meow' };
+
+  t.equal(
+    Obj.every(test, (v, k) => typeof v === 'string'),
+    true,
+    'Every value is a string'
+  );
+
+  t.equal(
+    Obj.every(test, (v, k) => k.length === 3),
+    true,
+    'Every key is 3 characters long'
+  );
+
+  t.equal(
+    Obj.every(test, (v, k) => v.length > 3),
+    false,
+    'Every value is not longer than 3 characters'
+  );
+
+  t.end()
 });
 
 xtape('map', function(t) {
