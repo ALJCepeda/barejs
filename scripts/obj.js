@@ -41,8 +41,8 @@
   /*
       Checks if every element is true for some condition
   */
-  obj.every = function(item, callback, allowFuncs) {
-     let element = obj.find(item, function(value, key) {
+  obj.every = (item, callback, allowFuncs) => {
+     let element = obj.find(item, (value, key) => {
           return !callback(value, key);
       }, allowFuncs);
 
@@ -52,8 +52,8 @@
 	/*
 		Iterates over all properties
 	*/
-	obj.each = function(item, callback, allowFuncs) {
-		obj.find(item, function(value, key) {
+	obj.each = (item, callback, allowFuncs) => {
+		obj.find(item, (value, key) => {
 			callback(value, key);
 		}, allowFuncs);
 	};
@@ -62,10 +62,10 @@
 	/*
 		Object mapping
 	*/
-	obj.map = function(item, callback, allowFuncs) {
+	obj.map = (item, callback, allowFuncs) => {
 		var result = {};
 
-		obj.each(item, function(value, key) {
+		obj.each(item, (value, key) => {
 			result[key] = callback(value, key);
 		}, allowFuncs);
 
@@ -75,7 +75,7 @@
 	/*
 		Reduces object keys and values to single vlue
 	*/
-	obj.reduce = function(item, callback, result, allowFuncs) {
+	obj.reduce = (item, callback, result, allowFuncs) => {
 		result = result || 0;
 		var cb = callback;
 
@@ -87,15 +87,15 @@
 
 		if(val.number(callback) || val.string(callback)) {
 			result = callback;
-			cb = function(p, v, k) { return p + v; };
+			cb = (p, v, k) => { p + v };
 		}
 
 		if(val.array(callback)) {
 			result = callback;
-			cb = function(p, v, k) { p.push(v); return p; };
+			cb = (p, v, k) => { p.push(v); return p; };
 		}
 
-		obj.each(item, function(value, key) {
+		obj.each(item, (value, key) => {
 			result = cb(result, value, key);
 		}, allowFuncs);
 
@@ -105,10 +105,10 @@
 	/*
 	  Creates new object based on condition
 	*/
-	obj.filter = function(item, callback, allowFuncs) {
+	obj.filter = (item, callback, allowFuncs) => {
 		var result = {};
 
-		obj.each(item, function(value, key) {
+		obj.each(item, (value, key) => {
 			if(callback(value, key) === true) {
 				result[key] = value;
 			}
@@ -120,10 +120,10 @@
 	/*
 		Pushes property keys onto array
 	*/
-	obj.keys = function(item, allowFuncs) {
+	obj.keys = (item, allowFuncs) => {
 		var result = [];
 
-		obj.each(obj, function(value, key) {
+		obj.each(item, (value, key) => {
 			result.push(key);
 		}, allowFuncs);
 
