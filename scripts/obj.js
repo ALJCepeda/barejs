@@ -106,54 +106,36 @@
 	  Creates new object based on condition
 	*/
 	obj.filter = (item, callback, allowFuncs) => {
-		var result = {};
-
-		obj.each(item, (value, key) => {
-			if(callback(value, key) === true) {
-				result[key] = value;
-			}
-		}, allowFuncs);
-
-		return result;
+    return obj.reduce(item,
+                      (p, v, k) => { if(callback(v, k) === true) { p[k] = v; } return p; },
+                      {}, allowFuncs);
 	};
 
 	/*
 		Pushes property keys onto array
 	*/
 	obj.keys = (item, allowFuncs) => {
-		var result = [];
-
-		obj.each(item, (value, key) => {
-			result.push(key);
-		}, allowFuncs);
-
-		return result;
+    return obj.reduce(item,
+                      (p, v, k) => { p.push(k); return p; },
+                      [], allowFuncs);
 	};
 
 	/*
 		Pushes property values onto array
 	*/
-	obj.values = function(item, allowFuncs) {
-		var result = [];
-
-		obj.each(item, function(value, key) {
-			result.push(value);
-		}, allowFuncs);
-
-		return result;
+	obj.values = (item, allowFuncs) => {
+    return obj.reduce(item,
+                      (p, v, k) => { p.push(v); return p; },
+                      [], allowFuncs);
 	};
 
 	/*
 		Converts object to array of (key,value) pairs
 	*/
-	obj.toArray = function(item, allowFuncs) {
-		var result = [];
-
-		obj.each(item, function(value, key) {
-			result.push({ value:value, key:key });
-		}, allowFuncs);
-
-		return result;
+	obj.toArray = (item, allowFuncs) => {
+    return obj.reduce(item,
+                      (p, v, k) => { p.push({key:k, value:v}); return p; },
+                      [], allowFuncs);
 	};
 
 	/*
@@ -161,7 +143,7 @@
 		item is modified
 	*/
 	obj.write = function(item, other, options) {
-        options = options || {};
+    options = options || {};
 
 		obj.each(other, function(value, key) {
             var data = value;
