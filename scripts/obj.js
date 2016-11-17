@@ -17,9 +17,6 @@
 		Delegated iteration over object
 	*/
 	obj.find = function(item, callback, allowFuncs) {
-		var keys = Object.keys(item);
-        var result;
-
 		var cb = callback;
 		if(val.string(callback)) {
 			cb = function(value, key) {
@@ -27,21 +24,18 @@
 			};
 		}
 
-		for (var i = keys.length - 1; i >= 0; i--) {
-			var key = keys[i];
-			value = item[key];
+    let keys = Object.keys(item);
+    let key = keys.find((key) => {
+      value = item[key];
 
-			if(allowFuncs !== true && val.function(value) === true) {
-				continue;
-			}
+      if(allowFuncs !== true && val.function(value) === true) {
+        return false;
+      }
 
-			if(cb(value, key) === true) {
-				result = value;
-				break;
-			}
-		}
+      return cb(value, key);
+    });
 
-		return result;
+    return item[key];
 	};
 
     /*
