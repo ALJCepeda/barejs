@@ -57,7 +57,6 @@
 			callback(value, key);
 		}, allowFuncs);
 	};
-
 	obj.forEach = obj.each;
 
 	/*
@@ -73,22 +72,18 @@
 		return result;
 	};
 
-    obj.array_map = function(item, callback, allowFuncs) {
-        var result = [];
-
-        obj.each(item, function(value, key) {
-            result.push(callback(value,key));
-        }, allowFuncs);
-
-        return result;
-    };
-
 	/*
 		Delegated reduction of object
 	*/
 	obj.reduce = function(item, callback, result, allowFuncs) {
 		result = result || 0;
 		var cb = callback;
+
+    if(val.undefined(allowFuncs) && val.boolean(result)) {
+      allowFuncs = result;
+    } else {
+      allowFuncs = false;
+    }
 
 		if(val.number(callback) || val.string(callback)) {
 			result = callback;
@@ -97,7 +92,7 @@
 
 		if(val.array(callback)) {
 			result = callback;
-			cb = function(p, v, k) { return result.push(v); };
+			cb = function(p, v, k) { p.push(v); return p; };
 		}
 
 		obj.each(item, function(value, key) {

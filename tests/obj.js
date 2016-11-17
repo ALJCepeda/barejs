@@ -71,28 +71,32 @@ tape('map', function(t) {
   t.end();
 });
 
-xtape('reduce', function(t) {
-	var count = {
-		students:38,
-		parents:62,
-		teachers:20,
-		officials:12,
-		military:10
-	};
+tape('reduce', function(t) {
+  t.equal(
+    Obj.reduce(animals, (p, v, k) => p + '<' + k + ', ' + v + '>', 'Pairs: '),
+    'Pairs: <cow, moo><dog, bark><cat, meow>',
+    'String representation of <key, value> pairs'
+  );
 
-	t.equal(
-		Obj.reduce(count, 0),
-		142,
-		'When number is provided as callback, values are summed with + operator'
-	);
+  t.equal(
+    Obj.reduce(animals, (p, v, k) => p + v.length + k.length, 0),
+    20,
+    'Total characters in object'
+  );
 
-	t.equal(
-		Obj.reduce(count, function(pre, value, key) { return pre + (value/2); }),
-		71,
-		'Providing a callback allows your own reduction'
-	);
+  t.deepEqual(
+    Obj.reduce(animals, []),
+    ['moo', 'bark', 'meow'],
+    'Simple default reduces when callback isn\'t provided'
+  );
 
-	t.end();
+  t.deepEqual(
+    Obj.reduce(animals, 'Animal sounds: '),
+    'Animal sounds: moobarkmeow',
+    'Is now a string of animal sounds'
+  );
+
+  t.end();
 });
 
 xtape('write', function(t) {
