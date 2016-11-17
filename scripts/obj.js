@@ -87,7 +87,7 @@
 
 		if(val.number(callback) || val.string(callback)) {
 			result = callback;
-			cb = (p, v, k) => { p + v };
+			cb = (p, v, k) => { return p + v; };
 		}
 
 		if(val.array(callback)) {
