@@ -1,27 +1,25 @@
 var tape = require('tape');
 var Obj = require('./../scripts/obj');
 
-let xtape = (name) => {
-  console.log(name, 'was skipped');
-};
+let xtape = tape.skip;
+
+let animals = { cow:'moo', dog:'bark', cat:'meow' };
 
 tape('find', (t) => {
-  var test = { cow:'moo', dog:'bark', cat:'meow' };
-
 	t.equal(
-		Obj.find(test, 'dog'),
+		Obj.find(animals, 'dog'),
 		'bark',
 		'Dog is a key and it\'s value is bark'
 	);
 
 	t.equal(
-		Obj.find(test, (v, k) => k === 'cat' ),
+		Obj.find(animals, (v, k) => k === 'cat' ),
 		'meow',
 		'The callback returned try because cat is a key and it\s value is meow'
 	);
 
   t.equal(
-    Obj.find(test, 'howl'),
+    Obj.find(animals, 'howl'),
     undefined,
     'Howl is not a value in this set, undefined was returned'
   );
@@ -30,27 +28,33 @@ tape('find', (t) => {
 });
 
 tape('every', function(t) {
-  var test = { cow:'moo', dog:'bark', cat:'meow' };
-
   t.equal(
-    Obj.every(test, (v, k) => typeof v === 'string'),
+    Obj.every(animals, (v, k) => typeof v === 'string'),
     true,
     'Every value is a string'
   );
 
   t.equal(
-    Obj.every(test, (v, k) => k.length === 3),
+    Obj.every(animals, (v, k) => k.length === 3),
     true,
     'Every key is 3 characters long'
   );
 
   t.equal(
-    Obj.every(test, (v, k) => v.length > 3),
+    Obj.every(animals, (v, k) => v.length > 3),
     false,
     'Every value is not longer than 3 characters'
   );
 
   t.end()
+});
+
+tape('each', function(t) {
+  t.plan(4);
+
+  Obj.each(animals, (v, k) => t.pass(k));
+
+  t.pass('Every property was iterated over');
 });
 
 xtape('map', function(t) {

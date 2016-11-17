@@ -19,7 +19,7 @@
 	obj.find = (item, callback, allowFuncs) => {
 		var cb = callback;
 		if(val.string(callback)) {
-			cb = function(value, key) {
+			cb = (value, key) => {
 				return (key === callback);
 			};
 		}
@@ -50,8 +50,7 @@
   };
 
 	/*
-		Iterates over all properties of object
-		Optionally includes functions
+		Iterates over all properties
 	*/
 	obj.each = function(item, callback, allowFuncs) {
 		obj.find(item, function(value, key) {
