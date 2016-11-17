@@ -99,6 +99,14 @@ tape('reduce', function(t) {
   t.end();
 });
 
+tape('filter', function(t) {
+  t.deepEqual(
+    Obj.filter(animals, v => v.length < 4),
+    [ cow:'moo' ],
+    'Only cow has a sound that\s less than 4 characters'
+  );
+});
+
 xtape('write', function(t) {
 	var item = { };
 

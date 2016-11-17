@@ -73,7 +73,7 @@
 	};
 
 	/*
-		Delegated reduction of object
+		Reduces object keys and values to single vlue
 	*/
 	obj.reduce = function(item, callback, result, allowFuncs) {
 		result = result || 0;
@@ -103,13 +103,13 @@
 	};
 
 	/*
-		Delegated filtering of object
+	  Creates new object based on condition
 	*/
-	obj.filter = function(item, cb, allowFuncs) {
+	obj.filter = function(item, callback, allowFuncs) {
 		var result = {};
 
 		obj.each(item, function(value, key) {
-			if(cb(value, key) === true) {
+			if(callback(value, key) === true) {
 				result[key] = value;
 			}
 		}, allowFuncs);
