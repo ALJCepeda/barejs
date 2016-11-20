@@ -146,12 +146,12 @@
     options = options || {};
 
 		obj.each(other, function(value, key) {
-            var data = value;
-            if(val.defined(options[key]) === true) {
-                data = options[key](value);
-            }
+      var data = value;
+      if(val.defined(options[key]) === true) {
+          data = options[key](value);
+      }
 
-            item[key] = data;
+      item[key] = data;
 		});
 	};
 
